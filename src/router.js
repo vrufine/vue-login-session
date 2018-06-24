@@ -20,13 +20,19 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path != '/login') {
-    l
-  }
-  if (window.localStorage.getItem('tokenLogado')) {
-    next()
+  const token = window.localStorage.getItem('token')
+  if (to.fullPath === '/login') {
+    if (token) {
+      next('/')
+    } else {
+      next()
+    }
   } else {
-    next('/login')
+    if (token) {
+      next()
+    } else {
+      next('/login')
+    }
   }
 })
 
