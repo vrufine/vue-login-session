@@ -4,24 +4,24 @@
       <v-flex>
         <v-card>
           <v-card-text>
-            <v-form ref="formLogin" @submit="entrar">
+            <v-form ref="formLogin" @submit="login">
               <v-text-field
-                label="Usuário"
-                v-model="usuario"
-                :rules="[validacoes.obrigatorio]"
-                @keyup.enter="entrar"
+                label="User"
+                v-model="user"
+                :rules="[validations.required]"
+                @keyup.enter="login"
               ></v-text-field>
               <v-text-field
-                label="Senha"
-                v-model="senha"
+                label="Password"
+                v-model="password"
                 type="password"
-                :rules="[validacoes.obrigatorio]"
-                @keyup.enter="entrar"
+                :rules="[validations.required]"
+                @keyup.enter="login"
               ></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" @click="entrar">Entrar</v-btn>
+            <v-btn color="primary" @click="login">Login</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -34,19 +34,19 @@
 
   export default {
     data: () => ({
-      usuario: '',
-      senha: '',
-      validacoes: {
-        obrigatorio: v => !!v || 'Esse campo é obrigatório!'
+      user: '',
+      password: '',
+      validations: {
+        required: v => !!v || 'This is a required field!'
       }
     }),
     methods: {
-      entrar() {
+      login() {
         if (this.$refs.formLogin.validate()) {
           jwt.sign({
-            usuario: this.usuario,
-            senha: this.senha
-          }, 'palavraChaveJwt', (err, token) => {
+            user: this.user,
+            password: this.password
+          }, 'jwtSecret', (err, token) => {
             window.localStorage.setItem('token', token)
             this.$router.push('/')
           })
